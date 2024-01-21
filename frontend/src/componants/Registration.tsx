@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Form, Input, Card, Upload, message, Button } from "antd";
-import toast, { Toaster } from "react-hot-toast";
 import { Select } from "antd";
 import { storage, firebase } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
@@ -17,62 +16,50 @@ const normFile = (e: any) => {
 };
 
 function Registration() {
-  const [imageUrl, setImageUrl] = React.useState("");
+  const [imageUrls, setImageUrls] = React.useState<string[]>([]);
+
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
-  // image validator
-  const customUploadValidator = async (file: File) => {
-    console.log("File name:", file.name);
-    console.log("File type:", file.type);
-    console.log("File size (in bytes):", file.size);
+  const customUploadValidator = async (file: File, files: File[]) => {
+    for (const file of files) {
+      // File Size Validation
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+      const fileSizeValidation = file.size <= maxSize;
 
-    const maxSize = 2 * 1024 * 1024; // 2 MB (adjust as needed)
+      // Type Validation
+      const allowedTypes = ["image/jpeg", "image/png"];
+      const typeValidation = allowedTypes.includes(file.type);
 
-    if (file.size > maxSize) {
-      message.error("File size exceeds the allowed limit (5 MB)");
-      form.resetFields(["bookImage"]); // Reset the upload element
-      return false; // Prevent the file from being uploaded
+      if (fileSizeValidation && typeValidation) {
+        try {
+          // Display a loading message while uploading
+          const loadingMessage = message.loading("Uploading image...", 0);
+
+          const storageRef = storage.ref();
+          const fileName = `${Date.now()}-${file.name}`;
+          const imageRef = storageRef.child(`images/${fileName}`);
+          const snapshot = await imageRef.put(file);
+          const downloadURL = await snapshot.ref.getDownloadURL();
+
+          setImageUrls((prevUrls) => [...prevUrls, downloadURL]);
+          loadingMessage();
+          message.success("Image upload Success!");
+          console.log(imageUrls);
+        } catch (error) {
+          console.error(error);
+          message.error("Error uploading image");
+        }
+      } else {
+        if (!fileSizeValidation) {
+          message.error("File size exceeds the allowed limit (2 MB)");
+        }
+        if (!typeValidation) {
+          message.error("You can only upload JPG and PNG files!");
+        }
+      }
     }
 
-    // check type
-    const allowedTypes = ["image/jpeg", "image/png"];
-    if (!allowedTypes.includes(file.type)) {
-      message.error("You can only upload JPG and PNG files!");
-      form.resetFields(["bookImage"]);
-      return false;
-    }
-
-    // Display a loading message while uploading
-    const loadingMessage = message.loading("Uploading image...", 0);
-
-    // Upload the file to Firebase Storage
-    const storageRef = storage.ref();
-    const fileName = `${Date.now()}-${file.name}`;
-    try {
-      const imageRef = storageRef.child(`images/${fileName}`);
-      const snapshot = await imageRef.put(file);
-
-      // You can now use the 'downloadURL' as needed (e.g., store it in your database)
-      setImageUrl(await snapshot.ref.getDownloadURL());
-
-      console.log("Download URL:", imageUrl);
-
-      // Close the loading message
-      loadingMessage();
-
-      message.info("Image uploaded successfully");
-
-      return false; // Prevent automatic file upload by returning false
-    } catch (error) {
-      // Close the loading message
-      loadingMessage();
-      console.error("Error uploading image:", error);
-      message.error("Error uploading image");
-      form.resetFields(["bookImage"]);
-
-      return false; // Prevent automatic file upload by returning false
-    }
+    return false; // Prevent automatic file upload
   };
 
   const OPTIONS = ["Computer", "Fashion", "Craft", "Food"];
@@ -101,7 +88,7 @@ function Registration() {
       phone: values.phone,
       whatsapp: values.whatsapp,
       platform: values.platform,
-      image: imageUrl,
+      image: imageUrls,
     };
 
     console.log(postData);
@@ -257,18 +244,15 @@ function Registration() {
             </Form.Item>
 
             <Form.Item
-              label="Upload Business Image"
+              label="Book Image"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
               name="bookImage"
-              rules={[
-                {
-                  required: false,
-                  message: "Please input your Business Image!",
-                },
-              ]}
+              rules={[{ required: true, message: "Please Add an image" }]}
             >
               <Upload
                 listType="picture-card"
-                maxCount={1}
+                maxCount={3}
                 accept=".jpg, .png"
                 beforeUpload={customUploadValidator}
               >
