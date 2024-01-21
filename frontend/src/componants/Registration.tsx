@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Form, Input, Card, Upload, message, Button } from "antd";
 import toast, { Toaster } from "react-hot-toast";
 import { Select } from "antd";
-
+import { storage, firebase } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
@@ -15,29 +17,53 @@ const normFile = (e: any) => {
 };
 
 function Registration() {
-  React.useEffect(() => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
-    console.log(token);
-  }, []);
-
   const [imageUrl, setImageUrl] = React.useState("");
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
+  // image validator
   const customUploadValidator = async (file: File) => {
     console.log("File name:", file.name);
     console.log("File type:", file.type);
     console.log("File size (in bytes):", file.size);
 
-    const maxSize = 5 * 1024 * 1024; // 5 MB (adjust as needed)
+    const maxSize = 2 * 1024 * 1024; // 2 MB (adjust as needed)
 
     if (file.size > maxSize) {
       message.error("File size exceeds the allowed limit (5 MB)");
       form.resetFields(["bookImage"]); // Reset the upload element
       return false; // Prevent the file from being uploaded
+    }
+
+    // check type
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      message.error("You can only upload JPG and PNG files!");
+      form.resetFields(["bookImage"]);
+      return false;
+    }
+
+    // Upload the file to Firebase Storage
+    const storageRef = storage.ref();
+    const fileName = `${Date.now()}-${file.name}`;
+    try {
+      const imageRef = storageRef.child(`images/${fileName}`);
+      const snapshot = await imageRef.put(file);
+
+      // You can now use the 'downloadURL' as needed (e.g., store it in your database)
+      setImageUrl(await snapshot.ref.getDownloadURL());
+
+      console.log("Download URL:", imageUrl);
+
+      message.info("Image uploaded successfully");
+
+      return false; // Prevent automatic file upload by returning false
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      message.error("Error uploading image");
+      form.resetFields(["bookImage"]);
+
+      return false; // Prevent automatic file upload by returning false
     }
   };
 
@@ -64,6 +90,32 @@ function Registration() {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  // handle submit
+  const handlesubmit = (values: any) => {
+    // vales to post
+    const postData = {
+      bookname: values.bookname,
+      author: values.author,
+      description: values.description,
+      rating: values.rating,
+      image: imageUrl,
+    };
+
+    // axios post
+
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}/addbook`, postData)
+      .then((response) => {
+        console.log("POST request success:", response.data);
+        message.success("Book posted");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("POST request error:", error);
+        message.error("Some field is missing or database not working");
+      });
   };
 
   return (
@@ -187,7 +239,7 @@ function Registration() {
 
             <Form.Item
               label="Upload Business Image"
-              name="image"
+              name="bookImage"
               rules={[
                 {
                   required: false,
