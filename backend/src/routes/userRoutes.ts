@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
-import { register } from "../controllers/userController.js";
+import { register, login } from "../controllers/userController.js";
 
 // login endpoint
-router.post("/login");
+router.post("/login", login);
 
 // register endpoint
 

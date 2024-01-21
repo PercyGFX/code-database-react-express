@@ -1,20 +1,27 @@
 "use client";
 import axios from "axios";
 
-import { Form, Input, Card, Button } from "antd";
+import { Form, Input, Card, Button, message } from "antd";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const onFinish = (values: any) => {
     axios
-      .post("/api/auth/login", values)
+      .post(`${process.env.REACT_APP_BACKEND}/login`, values, {
+        withCredentials: true,
+      })
       .then((result: any) => {
         console.log(result);
-        toast.success(result.data.message);
+        //toast.success(result.data.message);
+        message.success(result.data.message);
+        navigate("/");
       })
       .catch((error: any) => {
         console.log(error);
-        toast.error(error.response.data.message);
+        //toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 
@@ -64,7 +71,7 @@ const Login = () => {
 
               <div className="flex justify-end">
                 <Form.Item>
-                  <Button>Sign In</Button>
+                  <Button htmlType="submit">Login</Button>
                 </Form.Item>
               </div>
             </Form>

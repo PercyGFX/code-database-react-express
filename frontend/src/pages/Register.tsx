@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Form, Input, Card, Button } from "antd";
+import { Form, Input, Card, Button, message } from "antd";
 import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
@@ -8,10 +8,12 @@ const Register = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND}/register`, values)
       .then((result: any) => {
-        toast.success("User Created Succussfully.");
+        //toast.success("User Created Succussfully.");
+        message.success("User Created Succussfully.");
       })
       .catch((error: any) => {
-        toast.error(error.response.data.message);
+        //toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 

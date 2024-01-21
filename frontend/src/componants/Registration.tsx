@@ -190,7 +190,7 @@ function Registration() {
               name="image"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please input your Business Image!",
                 },
               ]}
@@ -210,7 +210,7 @@ function Registration() {
 
             <div className="flex justify-end">
               <Form.Item>
-                <Button>Sign In</Button>
+                <Button htmlType="submit">Login</Button>
               </Form.Item>
             </div>
           </Form>
