@@ -43,6 +43,9 @@ function Registration() {
       return false;
     }
 
+    // Display a loading message while uploading
+    const loadingMessage = message.loading("Uploading image...", 0);
+
     // Upload the file to Firebase Storage
     const storageRef = storage.ref();
     const fileName = `${Date.now()}-${file.name}`;
@@ -55,10 +58,15 @@ function Registration() {
 
       console.log("Download URL:", imageUrl);
 
+      // Close the loading message
+      loadingMessage();
+
       message.info("Image uploaded successfully");
 
       return false; // Prevent automatic file upload by returning false
     } catch (error) {
+      // Close the loading message
+      loadingMessage();
       console.error("Error uploading image:", error);
       message.error("Error uploading image");
       form.resetFields(["bookImage"]);
@@ -85,7 +93,18 @@ function Registration() {
   );
 
   const onFinish = (values: any) => {
-    console.log(values);
+    const postData = {
+      name: values.name,
+      business: values.business,
+      categories: values.categories,
+      description: values.description,
+      phone: values.phone,
+      whatsapp: values.whatsapp,
+      platform: values.platform,
+      image: imageUrl,
+    };
+
+    console.log(postData);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -93,30 +112,30 @@ function Registration() {
   };
 
   // handle submit
-  const handlesubmit = (values: any) => {
-    // vales to post
-    const postData = {
-      bookname: values.bookname,
-      author: values.author,
-      description: values.description,
-      rating: values.rating,
-      image: imageUrl,
-    };
+  // const handlesubmit = (values: any) => {
+  //   // vales to post
+  //   const postData = {
+  //     bookname: values.bookname,
+  //     author: values.author,
+  //     description: values.description,
+  //     rating: values.rating,
+  //     image: imageUrl,
+  //   };
 
-    // axios post
+  //   // axios post
 
-    axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/addbook`, postData)
-      .then((response) => {
-        console.log("POST request success:", response.data);
-        message.success("Book posted");
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("POST request error:", error);
-        message.error("Some field is missing or database not working");
-      });
-  };
+  //   axios
+  //     .post(`${process.env.REACT_APP_BACKEND_URL}/addbook`, postData)
+  //     .then((response) => {
+  //       console.log("POST request success:", response.data);
+  //       message.success("Book posted");
+  //       navigate("/");
+  //     })
+  //     .catch((error) => {
+  //       console.error("POST request error:", error);
+  //       message.error("Some field is missing or database not working");
+  //     });
+  // };
 
   return (
     <div className="  flex justify-center py-8">
