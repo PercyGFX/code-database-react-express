@@ -91,7 +91,14 @@ function Registration() {
       image: imageUrls,
     };
 
-    console.log(postData);
+    axios
+      .post(`${process.env.REACT_APP_BACKEND}/profilecomplete`, postData, {
+        withCredentials: true,
+      })
+      .then((result) => {})
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -115,3 +115,82 @@ export const login = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
+
+/// profile completetion
+
+export const profilecomplete = async (req: Request, res: Response) => {
+  try {
+    const {
+      id,
+      name,
+      business,
+      categories,
+      description,
+      phone,
+      whatsapp,
+      platform,
+      image,
+    } = req.body;
+
+    // Create user
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...{
+          name: name,
+          business: business,
+          description: description,
+          phone: phone,
+          whatsapp: whatsapp,
+        },
+      },
+    });
+
+    // Create categories associated with the user
+    await Promise.all(
+      categories.map(async (category: any) => {
+        await prisma.category.create({
+          data: {
+            userid: id,
+            category: category, // Ensure this matches the actual property name in your Prisma schema
+          },
+        });
+      })
+    );
+
+    // Create platforms associated with the user
+    await Promise.all(
+      platform.map(async (platform: any) => {
+        await prisma.platform.create({
+          data: {
+            userid: id,
+            platform,
+          },
+        });
+      })
+    );
+
+    // Create images associated with the user
+    await Promise.all(
+      image.map(async (img: any) => {
+        await prisma.userimage.create({
+          data: {
+            userid: id,
+            image: img,
+          },
+        });
+      })
+    );
+
+    res
+      .status(201)
+      .json({ message: "User and related data created successfully" });
+  } catch (error) {
+    console.error("Error creating user and related data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect();
+  }
+};

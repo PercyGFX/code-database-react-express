@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // User Model
@@ -15,10 +16,40 @@ model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
   password  String
-  phone Int?
-  shop_name String?
-  profile_image String?
+  name  String?
+  business String?
+  description String?
+  phone String?
+  whatsapp String?
   profile_completion Boolean
-  
+  categories        Category[]
+  platforms         Platform[]
+  images            Userimage[]
+}
 
+// categories
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  userid   Int 
+  category  String 
+  user    User     @relation(fields: [userid], references: [id]) 
+}
+
+// categories
+
+model Platform {
+  id      Int      @id @default(autoincrement())
+  userid   Int 
+  platform  String 
+  user    User     @relation(fields: [userid], references: [id]) 
+}
+
+// categories
+
+model Userimage {
+  id      Int      @id @default(autoincrement())
+  userid   Int 
+  image  String 
+  user    User     @relation(fields: [userid], references: [id]) 
 }
