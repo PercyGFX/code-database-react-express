@@ -15,6 +15,8 @@ app.use(
   })
 );
 
+app.set("trust proxy", 1);
+
 // middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
