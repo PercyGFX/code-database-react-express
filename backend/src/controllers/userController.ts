@@ -90,7 +90,7 @@ export const login = async (req: Request, res: Response) => {
       // cookie set
       res.cookie("token", token, {
         expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "none",
         secure: true,
       });
