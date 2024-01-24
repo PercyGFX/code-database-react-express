@@ -88,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
       // cookie set
       res.cookie("token", token, {
         httpOnly: false,
-        path: "/",
+        secure: true,
         expires: new Date(Date.now() + 3600000),
       });
 
