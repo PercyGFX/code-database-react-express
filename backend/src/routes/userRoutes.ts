@@ -4,7 +4,10 @@ import {
   register,
   login,
   profilecomplete,
+  profilecheck,
 } from "../controllers/userController.js";
+
+import { jwtauth } from "../middlewares.js";
 
 // login endpoint
 router.post("/login", login);
@@ -15,6 +18,10 @@ router.post("/register", register);
 
 // profile complete endpoint
 
-router.post("/profilecomplete", profilecomplete);
+router.post("/profilecomplete", jwtauth, profilecomplete);
+
+// profile complete check
+
+router.get("/profilecheck", jwtauth, profilecheck);
 
 export default router;

@@ -132,6 +132,22 @@ export const profilecomplete = async (req: Request, res: Response) => {
       image,
     } = req.body;
 
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        profile_completion: true,
+      },
+    });
+
+    if (existingUser && existingUser.profile_completion) {
+      return res.status(400).json({
+        status: false,
+        message: "Profile completion is already done for this user.",
+      });
+    }
+
     // Create user
     await prisma.user.update({
       where: {
@@ -144,6 +160,7 @@ export const profilecomplete = async (req: Request, res: Response) => {
           description: description,
           phone: phone,
           whatsapp: whatsapp,
+          profile_completion: true,
         },
       },
     });
@@ -194,3 +211,7 @@ export const profilecomplete = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
+
+///////////////// completion check
+
+export const profilecheck = async (req: Request, res: Response) => {};

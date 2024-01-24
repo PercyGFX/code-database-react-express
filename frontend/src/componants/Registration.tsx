@@ -5,6 +5,13 @@ import { storage, firebase } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+
+interface jwt {
+  email: string;
+  id: number;
+}
 
 const { TextArea } = Input;
 
@@ -16,6 +23,7 @@ const normFile = (e: any) => {
 };
 
 function Registration() {
+  const navigate = useNavigate();
   const [imageUrls, setImageUrls] = React.useState<string[]>([]);
 
   const [form] = Form.useForm();
@@ -80,7 +88,11 @@ function Registration() {
   );
 
   const onFinish = (values: any) => {
+    const token = Cookies.get("token") || "";
+    const decodedToken: jwt = jwtDecode(token);
+
     const postData = {
+      id: decodedToken.id,
       name: values.name,
       business: values.business,
       categories: values.categories,
@@ -91,13 +103,20 @@ function Registration() {
       image: imageUrls,
     };
 
+    console.log(postData);
+
     axios
       .post(`${process.env.REACT_APP_BACKEND}/profilecomplete`, postData, {
         withCredentials: true,
       })
-      .then((result) => {})
+      .then((result) => {
+        message.success("Profile Completion Done");
+        console.log(result);
+        navigate("/");
+      })
       .catch((error: any) => {
-        console.log(error);
+        message.error(error.response.data.message);
+        navigate("/");
       });
   };
 
@@ -251,7 +270,7 @@ function Registration() {
             </Form.Item>
 
             <Form.Item
-              label="Book Image"
+              label="Business Images"
               valuePropName="fileList"
               getValueFromEvent={normFile}
               name="bookImage"

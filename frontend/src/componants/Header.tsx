@@ -1,4 +1,4 @@
-"use client";
+import { Link } from "react-router-dom";
 
 function Header() {
   const handleLogout = () => {};
@@ -11,6 +11,9 @@ function Header() {
         <p className=" hover:cursor-pointer" onClick={handleLogout}>
           Logout
         </p>
+        <Link to="/report-new">
+          <p className=" hover:cursor-pointer px-5">Submit New</p>
+        </Link>
       </div>
     </div>
   );
