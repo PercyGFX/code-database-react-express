@@ -6,14 +6,30 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userroutes from "./routes/userRoutes.js";
 
-// Configure CORS to allow requests from your frontend
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL, // Replace with your frontend's URL
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
+
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, Content-Type, X-Requested-With, Accept"
+  );
+  next();
+});
 
 app.set("trust proxy", 1);
 
