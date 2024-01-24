@@ -85,6 +85,8 @@ export const login = async (req: Request, res: Response) => {
         expiresIn: "1d",
       });
 
+      res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+
       // cookie set
       res.cookie("token", token, {
         sameSite: "none",
