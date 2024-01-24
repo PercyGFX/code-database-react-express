@@ -91,6 +91,7 @@ export const login = async (req: Request, res: Response) => {
         secure: true,
         maxAge: 1000 * 60 * 60 * 48,
         sameSite: "none",
+        domain: process.env.FRONTEND_URL,
       });
 
       return res.status(200).json({
