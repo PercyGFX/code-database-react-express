@@ -27,8 +27,6 @@ export const register = async (req: Request, res: Response) => {
   // Hash the password using bcryptjs
   const hashedPassword = await hashPassword(password);
 
-  console.log(hashedPassword);
-
   // Create the new user
   const newUser = await prisma.user.create({
     data: {
@@ -78,8 +76,6 @@ export const login = async (req: Request, res: Response) => {
     );
 
     if (passwordcheck) {
-      console.log(existingUser);
-
       const tokenuser = {
         id: existingUser.id,
         email: existingUser.email,
@@ -212,6 +208,50 @@ export const profilecomplete = async (req: Request, res: Response) => {
   }
 };
 
-///////////////// completion check
+//////////////// completion check
 
-export const profilecheck = async (req: Request, res: Response) => {};
+interface token {
+  id: number;
+  user: string;
+  email: string;
+}
+
+export const profilecheck = async (req: Request, res: Response) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  try {
+    //check if jwt valid
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id: decodedToken.id,
+      },
+      select: {
+        profile_completion: true,
+      },
+    });
+
+    if (existingUser && existingUser.profile_completion) {
+      return res.status(200).json({
+        status: true,
+        message: "Profile Completion is done for this user.",
+      });
+    } else {
+      return res.status(400).json({
+        status: false,
+        message: "Profile Completion is not done for this user.",
+      });
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+};
