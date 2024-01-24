@@ -5,7 +5,8 @@ dotenv.config();
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userroutes from "./routes/userRoutes.js";
-import session from "express-session";
+
+app.set("trust proxy", 1);
 
 app.use(
   cors({
@@ -31,22 +32,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-app.use(
-  session({
-    secret: "damnthisissosecret",
-    resave: false,
-    saveUninitialized: true,
-    proxy: true,
-    cookie: {
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 48,
-      sameSite: "none",
-    },
-  })
-);
-
-app.set("trust proxy", 1);
 
 // middlewares
 app.use(express.urlencoded({ extended: false }));
