@@ -5,6 +5,7 @@ dotenv.config();
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userroutes from "./routes/userRoutes.js";
+import complainroutes from "./routes/complainRoutes.js";
 
 app.set("trust proxy", 1);
 
@@ -42,7 +43,7 @@ app.use(cookieParser());
 // routes
 
 app.use("/", userroutes);
-
+app.use("/", complainroutes);
 app.get("/", (req, res) => {
   res.send("helloo");
 });

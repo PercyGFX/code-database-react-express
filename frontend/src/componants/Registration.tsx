@@ -124,32 +124,6 @@ function Registration() {
     console.log("Failed:", errorInfo);
   };
 
-  // handle submit
-  // const handlesubmit = (values: any) => {
-  //   // vales to post
-  //   const postData = {
-  //     bookname: values.bookname,
-  //     author: values.author,
-  //     description: values.description,
-  //     rating: values.rating,
-  //     image: imageUrl,
-  //   };
-
-  //   // axios post
-
-  //   axios
-  //     .post(`${process.env.REACT_APP_BACKEND_URL}/addbook`, postData)
-  //     .then((response) => {
-  //       console.log("POST request success:", response.data);
-  //       message.success("Book posted");
-  //       navigate("/");
-  //     })
-  //     .catch((error) => {
-  //       console.error("POST request error:", error);
-  //       message.error("Some field is missing or database not working");
-  //     });
-  // };
-
   return (
     <div className="  flex justify-center py-8">
       <div className=" lg:w-3/12 w-full mx-4 lg:mx-0 shadow-md ">

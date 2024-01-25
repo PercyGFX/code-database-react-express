@@ -25,6 +25,7 @@ model User {
   categories        Category[]
   platforms         Platform[]
   images            Userimage[]
+  complains            Complain[]  
 }
 
 // categories
@@ -53,3 +54,28 @@ model Userimage {
   image  String   @db.LongText
   user    User     @relation(fields: [userid], references: [id]) 
 }
+
+// Complain Model
+model Complain {
+  id      Int      @id @default(autoincrement())
+  userid   Int 
+  name   String   
+  phone  String
+  phone2  String?
+  address String?
+  date String?
+  price String?
+  description String?
+  courier String?
+  couriercharge String?
+  images            Complainimage[]
+  user    User     @relation(fields: [userid], references: [id]) 
+}
+
+model Complainimage {
+  id      Int      @id @default(autoincrement())
+  complainid   Int 
+  image  String   @db.LongText
+  complain    Complain     @relation(fields: [complainid], references: [id]) 
+}
+

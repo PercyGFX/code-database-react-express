@@ -75,7 +75,7 @@ function Submit() {
     const decodedToken: jwt = jwtDecode(token);
 
     const postData = {
-      id: decodedToken.id,
+      userid: decodedToken.id,
       name: values.name,
       phone: values.phone,
       phone2: values.phone2,
@@ -90,19 +90,19 @@ function Submit() {
 
     console.log(postData);
 
-    // axios
-    //   .post(`${process.env.REACT_APP_BACKEND}/profilecomplete`, postData, {
-    //     withCredentials: true,
-    //   })
-    //   .then((result) => {
-    //     message.success("Profile Completion Done");
-    //     console.log(result);
-    //     navigate("/");
-    //   })
-    //   .catch((error: any) => {
-    //     message.error(error.response.data.message);
-    //     navigate("/");
-    //   });
+    axios
+      .post(`${process.env.REACT_APP_BACKEND}/submitComplain`, postData, {
+        withCredentials: true,
+      })
+      .then((result) => {
+        message.success("Submittion Done");
+        console.log(result);
+        navigate("/");
+      })
+      .catch((error: any) => {
+        message.error(error.response.data.message);
+        navigate("/");
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
