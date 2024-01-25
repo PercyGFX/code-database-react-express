@@ -291,7 +291,7 @@ function Registration() {
 
             <div className="flex justify-end">
               <Form.Item>
-                <Button htmlType="submit">Login</Button>
+                <Button htmlType="submit">Complete</Button>
               </Form.Item>
             </div>
           </Form>

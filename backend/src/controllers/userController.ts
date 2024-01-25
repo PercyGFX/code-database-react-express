@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
+
+interface DecodedToken extends JwtPayload {
+  id: number; // Assuming id is a string, adjust the type accordingly
+}
 
 const prisma = new PrismaClient();
 
@@ -213,12 +218,6 @@ export const profilecomplete = async (req: Request, res: Response) => {
 
 //////////////// completion check
 
-interface token {
-  id: number;
-  user: string;
-  email: string;
-}
-
 export const profilecheck = async (req: Request, res: Response) => {
   const token = req.cookies.token;
 
@@ -230,7 +229,10 @@ export const profilecheck = async (req: Request, res: Response) => {
 
   try {
     //check if jwt valid
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as DecodedToken;
 
     const existingUser = await prisma.user.findUnique({
       where: {
