@@ -56,3 +56,26 @@ export const submitComplain = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
+
+export const search = async (req: Request, res: Response) => {
+  try {
+    const { search } = req.body;
+
+    const complains = await prisma.complain.findMany({
+      where: {
+        OR: [{ phone: search }, { phone2: search }],
+      },
+      include: {
+        images: true, // Eagerly fetch related ComplainImage records
+      },
+    });
+    if (complains.length > 0) {
+      res.status(200).json({ success: true, data: complains });
+    } else {
+      res.status(401).json({ success: false, message: "No records found" });
+    }
+  } catch (error) {
+    console.error("Error creating user and related data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

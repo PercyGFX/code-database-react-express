@@ -98,7 +98,6 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: false,
         sameSite: "none",
         secure: true,
-        domain: ".vercel.app",
       });
 
       return res.status(200).json({
