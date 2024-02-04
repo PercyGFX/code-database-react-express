@@ -92,13 +92,16 @@ export const login = async (req: Request, res: Response) => {
 
       // res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
 
+      const maxAgeInMilliseconds = 5 * 24 * 60 * 60 * 1000;
+
       // cookie set
       res.cookie("token", token, {
         httpOnly: false,
         sameSite: "none",
         secure: true,
         path: "/",
-        expires: new Date(Date.now() + 3600000 * 5),
+        // expires: new Date(Date.now() + 3600000 * 5),
+        maxAge: maxAgeInMilliseconds,
       });
 
       return res.status(200).json({
