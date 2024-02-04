@@ -18,10 +18,10 @@ router.post("/register", register);
 
 // profile complete endpoint
 
-router.post("/profilecomplete", jwtauth, profilecomplete);
+router.post("/profilecomplete", profilecomplete);
 
 // profile complete check
 
-router.get("/profilecheck", jwtauth, profilecheck);
+router.post("/profilecheck", profilecheck);
 
 export default router;

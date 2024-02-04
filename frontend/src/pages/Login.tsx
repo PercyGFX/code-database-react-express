@@ -16,7 +16,9 @@ const Login = () => {
         console.log(result);
         //toast.success(result.data.message);
         message.success(result.data.message);
+        localStorage.setItem("token", result.data.token);
         navigate("/");
+
       })
       .catch((error: any) => {
         console.log(error);

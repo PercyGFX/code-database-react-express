@@ -95,18 +95,19 @@ export const login = async (req: Request, res: Response) => {
       const maxAgeInMilliseconds = 5 * 24 * 60 * 60 * 1000;
 
       // cookie set
-      res.cookie("token", token, {
-        httpOnly: false,
-        sameSite: "none",
-        secure: true,
-        path: "/",
-        // expires: new Date(Date.now() + 3600000 * 5),
-        maxAge: maxAgeInMilliseconds,
-      });
+      // res.cookie("token", token, {
+      //   httpOnly: false,
+      //   sameSite: "none",
+      //   secure: true,
+      //   path: "/",
+      //   // expires: new Date(Date.now() + 3600000 * 5),
+      //   maxAge: maxAgeInMilliseconds,
+      // });
 
       return res.status(200).json({
         status: true,
         message: "Login Success",
+        token: token,
       });
     } else {
       return res.status(400).json({
@@ -223,8 +224,9 @@ export const profilecomplete = async (req: Request, res: Response) => {
 //////////////// completion check
 
 export const profilecheck = async (req: Request, res: Response) => {
-  const token = req.cookies.token;
-
+  const { token } = req.body;
+  console.log("rpfoiel checking");
+  console.log(token);
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized",

@@ -5,9 +5,9 @@ import { submitComplain, search } from "../controllers/complainController.js";
 import { jwtauth } from "../middlewares.js";
 
 // submit complain
-router.post("/submitComplain", jwtauth, submitComplain);
+router.post("/submitComplain",  submitComplain);
 
 // search complain
-router.post("/search", jwtauth, search);
+router.post("/search", search);
 
 export default router;

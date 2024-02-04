@@ -6,15 +6,19 @@ import axios from "axios";
 function CompletionCheck() {
   const [apiSuccess, setApiSuccess] = React.useState(false);
   const navigate = useNavigate();
-  if (Cookies.get("token")) {
-    const token = Cookies.get("token");
+  if (localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
 
     // verify token from backend
     if (token) {
       axios
-        .get(`${process.env.REACT_APP_BACKEND}/profilecheck`, {
-          withCredentials: true,
-        })
+        .post(
+          `${process.env.REACT_APP_BACKEND}/profilecheck`,
+          { token },
+          {
+            withCredentials: true,
+          }
+        )
         .then((result) => {
           setApiSuccess(true);
         })
