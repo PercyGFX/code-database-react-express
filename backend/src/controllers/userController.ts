@@ -90,14 +90,15 @@ export const login = async (req: Request, res: Response) => {
         expiresIn: "1d",
       });
 
-      res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+      // res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
 
       // cookie set
       res.cookie("token", token, {
-        expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
         httpOnly: false,
         sameSite: "none",
         secure: true,
+        path: "/",
+        expires: new Date(Date.now() + 3600000),
       });
 
       return res.status(200).json({
