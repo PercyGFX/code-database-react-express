@@ -98,7 +98,7 @@ export const login = async (req: Request, res: Response) => {
         sameSite: "none",
         secure: true,
         path: "/",
-        expires: new Date(Date.now() + 3600000),
+        expires: new Date(Date.now() + 3600000 * 2),
       });
 
       return res.status(200).json({
