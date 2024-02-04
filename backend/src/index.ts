@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import userroutes from "./routes/userRoutes.js";
 import complainroutes from "./routes/complainRoutes.js";
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 app.use(
   cors({
