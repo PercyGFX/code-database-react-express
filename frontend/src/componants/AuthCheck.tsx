@@ -20,11 +20,11 @@ function AuthCheck() {
     }
   } else {
     console.log("no token found");
-    return (
-      <div>
-        <Navigate to="/login" />
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <Navigate to="/login" />
+    //   </div>
+    // );
   }
 }
 
