@@ -8,8 +8,10 @@ function AuthCheck() {
 
     // verify token from backend
     if (token) {
+      console.log("token found");
       return <Outlet />;
     } else {
+      console.log("token found bot not valid");
       return (
         <div>
           <Navigate to="/login" />
@@ -17,6 +19,7 @@ function AuthCheck() {
       );
     }
   } else {
+    console.log("no token found");
     return (
       <div>
         <Navigate to="/login" />
