@@ -70,6 +70,7 @@ const Search = () => {
         visible={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
         {selectedOrder && (
           <>
@@ -142,8 +143,8 @@ const Search = () => {
         <div className="lg:w-6/12 w-full mx-4 lg:mx-0">
           {data && data.length > 0 && (
             <>
-              <p className="text-3xl font-semibold text-slate-600 py-6">
-                Details
+              <p className="text-2xl font-semibold text-slate-600">
+                Available Orders
               </p>
               {data.map((data1) => (
                 <Card
