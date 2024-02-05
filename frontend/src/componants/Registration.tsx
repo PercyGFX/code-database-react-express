@@ -88,7 +88,7 @@ function Registration() {
   );
 
   const onFinish = (values: any) => {
-    const token = Cookies.get("token") || "";
+    const token = localStorage.getItem("token") || "";
     const decodedToken: jwt = jwtDecode(token);
 
     const postData = {
