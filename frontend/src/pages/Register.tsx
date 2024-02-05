@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Form, Input, Card, Button, message } from "antd";
 import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const onFinish = (values: any) => {
@@ -51,7 +52,6 @@ const Register = () => {
               >
                 <Input />
               </Form.Item>
-
               <Form.Item
                 label="Password"
                 name="password"
@@ -61,12 +61,18 @@ const Register = () => {
               >
                 <Input.Password />
               </Form.Item>
-
               <div className="flex justify-end">
                 <Form.Item>
                   <Button htmlType="submit">Register</Button>
                 </Form.Item>
               </div>
+              Already a member?
+              <Link to="/login">
+                <span className=" text-sky-600 cursor-pointer">
+                  {" "}
+                  Login here
+                </span>
+              </Link>
             </Form>
           </Card>
         </div>

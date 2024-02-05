@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { Form, Input, Card, Button, message } from "antd";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ const Login = () => {
         message.success(result.data.message);
         localStorage.setItem("token", result.data.token);
         navigate("/");
-
       })
       .catch((error: any) => {
         console.log(error);
@@ -60,7 +59,6 @@ const Login = () => {
               >
                 <Input />
               </Form.Item>
-
               <Form.Item
                 label="Password"
                 name="password"
@@ -70,12 +68,17 @@ const Login = () => {
               >
                 <Input.Password />
               </Form.Item>
-
               <div className="flex justify-end">
                 <Form.Item>
                   <Button htmlType="submit">Login</Button>
                 </Form.Item>
               </div>
+              Not a member yet?
+              <Link to="/register">
+                <span className=" text-sky-600 cursor-pointer">
+                  &nbsp; Register Here
+                </span>
+              </Link>
             </Form>
           </Card>
         </div>
