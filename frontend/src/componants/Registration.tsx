@@ -196,7 +196,7 @@ function Registration() {
               <TextArea
                 rows={4}
                 placeholder="About your Business"
-                maxLength={6}
+                maxLength={100}
               />
             </Form.Item>
 

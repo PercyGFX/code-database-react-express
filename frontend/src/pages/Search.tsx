@@ -20,6 +20,7 @@ const Search = () => {
     courier: string;
     couriercharge: number;
     date: string;
+    ordername: string;
     description: string;
     phone: string;
     phone2?: string;
@@ -84,24 +85,63 @@ const Search = () => {
         footer={null}
       >
         {selectedOrder && (
-          <>
-            <p>Name: {selectedOrder.name}</p>
-            <p>Address: {selectedOrder.address}</p>
-            <p>Courier: {selectedOrder.courier}</p>
-            <p>Date: {selectedOrder.date}</p>
-            <p>Description: {selectedOrder.description}</p>
-            <p>Courier Charge: {selectedOrder.couriercharge}</p>
-            <p>Phone Number: {selectedOrder.phone}</p>
+          <div>
             <p>
-              Phone Number 2:
+              <span className="font-semibold">Name:</span>
+            </p>
+            <p>{selectedOrder.name}</p>
+
+            <p>
+              <span className="font-semibold">Address:</span>
+            </p>
+            <p>{selectedOrder.address}</p>
+
+            <p>
+              <span className="font-semibold">Courier:</span>
+            </p>
+            <p>{selectedOrder.courier}</p>
+
+            <p>
+              <span className="font-semibold">Order Name:</span>
+            </p>
+            <p>{selectedOrder.ordername}</p>
+
+            <p>
+              <span className="font-semibold">Date:</span>
+            </p>
+            <p>{new Date(selectedOrder.date).toISOString().split("T")[0]}</p>
+
+            <p>
+              <span className="font-semibold">Description:</span>
+            </p>
+            <p>{selectedOrder.description}</p>
+
+            <p>
+              <span className="font-semibold">Courier Charge:</span>
+            </p>
+            <p>{selectedOrder.couriercharge}</p>
+
+            <p>
+              <span className="font-semibold">Phone Number:</span>
+            </p>
+            <p>{selectedOrder.phone}</p>
+
+            <p>
+              <span className="font-semibold">Phone Number 2:</span>
+            </p>
+            <p>
               {selectedOrder.phone2 ? selectedOrder.phone2 : "Not Available"}
             </p>
-            <p>Package Price: {selectedOrder.price}</p>
+
+            <p>
+              <span className="font-semibold">Package Price:</span>
+            </p>
+            <p>{selectedOrder.price}</p>
 
             {/* Iterate over images array */}
             {selectedOrder.images && selectedOrder.images.length > 0 && (
               <div>
-                <p>Images:</p>
+                <p> <span className="font-semibold">Proof Photos: </span></p>
                 <Image.PreviewGroup
                   preview={{
                     onChange: (current, prev) =>
@@ -123,17 +163,17 @@ const Search = () => {
                 </Image.PreviewGroup>
               </div>
             )}
-          </>
+          </div>
         )}
       </Modal>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="mt-1 p-4 flex justify-center h-vh">
         <form
           onSubmit={handleSubmit}
-          className=" bg-white rounded-full p-1 md:w-5/12 flex justify-center shadow-md px-4"
+          className=" bg-white rounded-full p-1 md:w-5/12 flex justify-center shadow-md "
         >
           <input
-            className=" text-2xl p-2 w-full rounded-full focus:outline-none border-none font-poppins"
+            className=" text-xl p-2 w-full rounded-full focus:outline-none border-none font-poppins"
             type="text"
             placeholder="Customer Phone Number"
             onChange={(e) => {
@@ -164,8 +204,10 @@ const Search = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <div className="justify-center pb-4">
-                    <p>Order Date: {data1.date}</p>
-                    <p>Order Description: {data1.description}</p>
+                    <p>
+                      Date: {new Date(data1.date).toISOString().split("T")[0]}
+                    </p>
+                    <p>Order Name: {data1.ordername}</p>
                   </div>
                   <Button onClick={() => showOrderDetails(data1)}>
                     View Order

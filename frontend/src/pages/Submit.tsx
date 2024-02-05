@@ -31,7 +31,7 @@ function Submit() {
   const customUploadValidator = async (file: File, files: File[]) => {
     for (const file of files) {
       // File Size Validation
-      const maxSize = 2 * 1024 * 1024; // 2 MB
+      const maxSize = 6 * 1024 * 1024; // 2 MB
       const fileSizeValidation = file.size <= maxSize;
 
       // Type Validation
@@ -59,7 +59,7 @@ function Submit() {
         }
       } else {
         if (!fileSizeValidation) {
-          message.error("File size exceeds the allowed limit (2 MB)");
+          message.error("File size exceeds the allowed limit (6 MB)");
         }
         if (!typeValidation) {
           message.error("You can only upload JPG and PNG files!");
@@ -80,6 +80,7 @@ function Submit() {
       phone: values.phone,
       phone2: values.phone2,
       address: values.address,
+      ordername: values.ordername,
       date: values.date.$d,
       price: values.price,
       courier: values.courier,
@@ -184,6 +185,16 @@ function Submit() {
             </Form.Item>
 
             <Form.Item
+              label="Order Name"
+              name="ordername"
+              rules={[
+                { required: true, message: "Please input your Order Name!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
               label="Order Date"
               name="date"
               rules={[{ required: true, message: "Please input order date!" }]}
@@ -228,7 +239,7 @@ function Submit() {
             >
               <TextArea
                 rows={4}
-                placeholder="About your Business"
+                placeholder="Describe your incident!"
                 maxLength={500}
               />
             </Form.Item>
@@ -238,7 +249,7 @@ function Submit() {
               valuePropName="fileList"
               getValueFromEvent={normFile}
               name="bookImage"
-              rules={[{ required: false, message: "Please Add an image" }]}
+              rules={[{ required: true, message: "Please Add an image" }]}
             >
               <Upload
                 listType="picture-card"
