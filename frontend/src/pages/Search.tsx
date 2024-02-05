@@ -56,7 +56,7 @@ const Search = () => {
       .catch((error: any) => {
         setData([]);
         message.error("No data found");
-        if (!error.response.data.token) {
+        if (error.response.data.token === false) {
           localStorage.removeItem("token");
           navigate("/login");
         }
