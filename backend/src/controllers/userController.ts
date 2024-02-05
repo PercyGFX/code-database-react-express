@@ -225,7 +225,7 @@ export const profilecomplete = async (req: Request, res: Response) => {
 
 export const profilecheck = async (req: Request, res: Response) => {
   const { token } = req.body;
-  console.log("rpfoiel checking");
+ 
   console.log(token);
   if (!token) {
     return res.status(401).json({

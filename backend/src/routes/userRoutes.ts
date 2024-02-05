@@ -18,7 +18,7 @@ router.post("/register", register);
 
 // profile complete endpoint
 
-router.post("/profilecomplete", profilecomplete);
+router.post("/profilecomplete", jwtauth, profilecomplete);
 
 // profile complete check
 

@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const handleLogout = () => {};
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   return (
     <div className=" flex justify-between px-8 py-3 shadow-md rounded-sm bg-white items-center">

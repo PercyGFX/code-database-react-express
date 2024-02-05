@@ -93,6 +93,9 @@ function Submit() {
     axios
       .post(`${process.env.REACT_APP_BACKEND}/submitComplain`, postData, {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
+        },
       })
       .then((result) => {
         message.success("Submittion Done");

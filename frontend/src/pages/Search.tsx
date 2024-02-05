@@ -35,19 +35,30 @@ const Search = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
+    const token = localStorage.getItem("token") || "";
+
     axios
       .post(
         `${process.env.REACT_APP_BACKEND}/search`,
         { search },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
+          },
+        }
       )
       .then((result) => {
         console.log(result.data.data);
         setData(result.data.data);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setData([]);
         message.error("No data found");
+        if (!error.response.data.token) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
       });
   };
 

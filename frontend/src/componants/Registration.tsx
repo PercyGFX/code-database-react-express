@@ -108,6 +108,9 @@ function Registration() {
     axios
       .post(`${process.env.REACT_APP_BACKEND}/profilecomplete`, postData, {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
+        },
       })
       .then((result) => {
         message.success("Profile Completion Done");
