@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Form, Input, Card, Button, message } from "antd";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate();
   const onFinish = (values: any) => {
     console.log("Success:", values);
     axios
@@ -11,6 +12,7 @@ const Register = () => {
       .then((result: any) => {
         //toast.success("User Created Succussfully.");
         message.success("User Created Succussfully.");
+        navigate("/login");
       })
       .catch((error: any) => {
         //toast.error(error.response.data.message);
