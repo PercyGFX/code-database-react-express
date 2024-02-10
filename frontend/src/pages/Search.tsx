@@ -28,6 +28,7 @@ const Search = () => {
     images?: { image: string }[];
     user: {
       name: string;
+      business: string
     };
   }
 
@@ -172,7 +173,7 @@ const Search = () => {
 
             <p className=" text-right">
               <span className=" text-xs">
-                Reported by: {selectedOrder.user.name}
+                Reported by: {selectedOrder.user.business}
               </span>
             </p>
           </div>
@@ -208,7 +209,7 @@ const Search = () => {
             {data && data.length > 0 && (
               <>
                 <p className="text-2xl font-semibold text-slate-600">
-                  Available Orders
+                  Customer History
                 </p>
                 {data.map((data1) => (
                   <Card

@@ -20,7 +20,7 @@ function Header() {
   return (
     <div className=" flex justify-between px-4 py-3 shadow-md rounded-sm bg-white items-center">
       <div>
-        <Link to="/">Cod Delivery </Link>
+        <Link to="/">Cod Lanka </Link>
       </div>
 
       <div className=" flex px-3 items-center text-sm">
