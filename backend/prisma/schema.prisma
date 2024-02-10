@@ -69,6 +69,7 @@ model Complain {
   description String?
   courier String?
   couriercharge String?
+  is_active Boolean
   images            Complainimage[]
   user    User     @relation(fields: [userid], references: [id]) 
 }

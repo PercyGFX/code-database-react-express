@@ -37,6 +37,7 @@ export const submitComplain = async (req: Request, res: Response) => {
         courier,
         couriercharge,
         description,
+        is_active: true,
       },
     });
 
@@ -66,12 +67,16 @@ export const search = async (req: Request, res: Response) => {
     const complains = await prisma.complain.findMany({
       where: {
         OR: [{ phone: search }, { phone2: search }],
+        is_active: true, 
       },
       include: {
-        images: true, // Eagerly fetch related ComplainImage records
+        images: true, 
+        user: true
       },
     });
     if (complains.length > 0) {
+
+      console.log(complains);
       res.status(200).json({ success: true, data: complains });
     } else {
       res.status(401).json({ success: false, message: "No records found" });

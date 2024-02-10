@@ -5,7 +5,6 @@ import { storage, firebase } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
-import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 interface jwt {
@@ -70,7 +69,15 @@ function Registration() {
     return false; // Prevent automatic file upload
   };
 
-  const OPTIONS = ["Computer", "Fashion", "Craft", "Food"];
+  const OPTIONS = [
+    "Electronic",
+    "Fashion",
+    "Craft & Gift",
+    "Food",
+    "Baby Care",
+    "Home & Lifestyle",
+    "Kids & Toys"
+  ];
   const PLATFORMOPTIONS = [
     "Facebook",
     "Whatsapp",
